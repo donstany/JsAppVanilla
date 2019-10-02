@@ -1,0 +1,2 @@
+# JsAppVanilla
+Sample Native App
