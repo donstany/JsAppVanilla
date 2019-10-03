@@ -36,11 +36,15 @@ import { MOCK } from "./MOCK_DATA.js";
         email: (_, x) => `<a href="mailto:${x}">${x}</a>`
     }
 
-    const headingsMap = {
-        first_name : (type,content) => {
-            return `<a class="filter" data-sortby="${type}">${content}</a>`
-        }
-    };
+
+    
+
+    const headingsMap = ["id","first_name", "last_name", "email", "gender", "ip_address"]
+                        .reduce((a,b) => {
+                                    a[b] = (type,content) => `<a class="filter" data-sortby="${type}">${content}</a>`;
+                                    return a;
+                                }, {});
+   
 
     const defaultTd = chooseContentType.bind(
             undefined,
@@ -94,7 +98,11 @@ import { MOCK } from "./MOCK_DATA.js";
     addToHTML(data);
 
     function sortBy(key, objA, objB ){
+        if(typeof objA[key] === "number"){
+           return objA[key] - objB[key];
+        }
         return objA[key].localeCompare(objB[key]);
+
     }
 
     document.addEventListener("click", function(evt) { 
@@ -105,7 +113,7 @@ import { MOCK } from "./MOCK_DATA.js";
                 )
             )
         }
-    }, true ) = result;
+    }, true );
 
 }(MOCK.slice(0,20), document))
 // (MOCK, {getElementById: () => { } }))
