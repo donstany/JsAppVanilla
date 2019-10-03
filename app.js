@@ -32,7 +32,8 @@ import { MOCK } from "./MOCK_DATA.js";
     // render hook
     const fieldsMap ={
         avatar: x => createSingleTag("img", "src", x),
-        friends : list => renderUl(list.map(f => renderLi(`${f.first_name} ${f.last_name}`)))
+        friends : list => renderUl(list.map(f => renderLi(`${f.first_name} ${f.last_name}`))),
+        email: x => `<a href="mailto:${x}">${x}</a>`
     }
     const defaultTd = chooseContentType.bind(
             undefined,
@@ -40,12 +41,23 @@ import { MOCK } from "./MOCK_DATA.js";
             renderTd
     );
 
+    const dictionary = {
+        id: "Identity",
+        email: "Mail",
+        avatar: "Photo",
+        gender: "Gender",
+        last_name: "Last Name",
+        first_name: "Name",
+        friends:"Friends",
+        ip_address:"IP",
+    };
+
     let result = renderTable(
-        renderThead(renderTr(keys.map( key => renderTh(key)))) 
+        renderThead(renderTr(keys.map(key => renderTh(dictionary[key])))) 
         +
         renderTbody(
             data.map( row  => renderTr( keys.map(cell => defaultTd(cell,row[cell]))))
-                    )
+                   )
     )
  
     document .getElementById("app").innerHTML = result;
